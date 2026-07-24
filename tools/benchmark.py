@@ -25,7 +25,8 @@ def main():
     parser = argparse.ArgumentParser(description="Benchmark the Swarm Garden simulation")
     parser.add_argument("--particles", type=positive_int, default=2200)
     parser.add_argument("--frames", type=positive_int, default=30)
-    parser.add_argument("--visualize", action="store_true")
+    parser.add_argument("--visualize", dest="visualize", action="store_true", default=True)
+    parser.add_argument("--no-visualize", dest="visualize", action="store_false")
     parser.add_argument("--duration", type=positive_float, default=10.0)
     parser.add_argument("--visual-particles", type=positive_int, default=3500)
     args = parser.parse_args()
@@ -49,7 +50,7 @@ def main():
     )
 
     if args.visualize:
-        subprocess.run(
+        visualize = subprocess.run(
             [
                 sys.executable,
                 str(project / "tools" / "window_renderer.py"),
@@ -61,8 +62,14 @@ def main():
                 str(args.duration),
             ],
             cwd=project,
-            check=True,
         )
+        if visualize.returncode != 0:
+            print(
+                "warning: --visualize pass failed (exit "
+                f"{visualize.returncode}); measured results above are unaffected "
+                "(likely no graphical display available, e.g. a headless runner)",
+                file=sys.stderr,
+            )
 
 
 if __name__ == "__main__":
