@@ -1,56 +1,41 @@
-# Swarm Garden
+# Swarm Garden (Discovery-ready lab)
 
 Swarm Garden is a deterministic C++17 particle-life simulation with five interacting species in a toroidal world.
 
+This branch is a **teaching seed**: compile and correctness tests are present, but there is **no Discovery-ready benchmark harness**. Your job is to add one before importing the repository into Artemis.
+
 The seed implementation intentionally checks every particle pair even though forces have a fixed interaction radius. This creates a clear optimization opportunity while the correctness test protects deterministic simulation behavior.
+
+## What is missing
+
+Artemis Discovery needs a root-level, headless benchmark that writes numeric metrics to `artemis_results.json` (or `.csv`). This branch does not provide that file or a wrapper that creates it.
+
+`./build/swarm_garden benchmark` still times the simulation and prints `fps=` to stdout. That is a useful timed path, not an Artemis results channel.
 
 ## Requirements
 
 - CMake 3.16 or newer
 - A C++17 compiler
-- Python 3 for the benchmark wrapper
-- Python Tkinter and a graphical display for the (default-on) visualization pass; see below for headless behavior
+- Python 3 (once you add a harness script)
 
-## Artemis commands
-
-Compile:
+## Local build and test
 
 ```bash
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build --parallel
-```
-
-Test:
-
-```bash
 ctest --test-dir build --output-on-failure
 ```
 
-Benchmark:
+Optional timed path (stdout only — not Discovery-ready):
 
 ```bash
-python3 tools/benchmark.py
+./build/swarm_garden benchmark 2200 30
 ```
 
-The benchmark measures 30 simulation frames with 2,200 particles after five warmup frames and writes `simulation_fps` to `artemis_results.json`.
+## Success criteria for the lab
 
-## Visualization
+1. Add a headless harness (typically under `tools/`) that measures `simulation_fps`.
+2. Write numeric `{"simulation_fps": ...}` to `artemis_results.json` at the repository root.
+3. Verify compile → test → benchmark from the repository root.
+4. Push the harness to your fork, import that fork into Artemis, and run a short Discovery.
 
-The measured benchmark is always followed by a visual pass — 3,500 particles for 10 seconds by default — showing the resulting simulation:
-
-```bash
-python3 tools/benchmark.py
-```
-
-Change the duration and visual workload without changing the measured workload:
-
-```bash
-python3 tools/benchmark.py --duration 20 --visual-particles 4000
-```
-
-Pass `--no-visualize` to skip it entirely, e.g. for a faster local loop:
-
-```bash
-python3 tools/benchmark.py --no-visualize
-```
-
-The visualization is never part of the timed benchmark section, so it cannot affect `simulation_fps`. On a runner with no graphical display, the visualization pass fails and prints a warning to stderr instead of failing the whole command — the measured `artemis_results.json` from the timed section is written first and is unaffected either way.
+Follow the Artemis documentation example **Making Particle Life Discovery-ready** for the full fork → harness → import → Discovery workflow.
