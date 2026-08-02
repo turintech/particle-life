@@ -3,7 +3,6 @@
 #include <array>
 #include <chrono>
 #include <cstdint>
-#include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <stdexcept>
@@ -23,7 +22,7 @@ std::size_t parse_count(const char* value, const char* name) {
     }
 }
 
-int benchmark(std::size_t particle_count, std::size_t frame_count, const std::string& output_path) {
+int benchmark(std::size_t particle_count, std::size_t frame_count) {
     swarm::Simulation simulation(particle_count, 20260724);
     constexpr std::size_t warmup_frames = 5;
     for (std::size_t frame = 0; frame < warmup_frames; ++frame) {
@@ -40,17 +39,12 @@ int benchmark(std::size_t particle_count, std::size_t frame_count, const std::st
     const double fps = static_cast<double>(frame_count) / elapsed_seconds;
     const double frame_ms = elapsed_seconds * 1000.0 / static_cast<double>(frame_count);
 
-    std::ofstream output(output_path);
-    if (!output) {
-        throw std::runtime_error("could not open results file: " + output_path);
-    }
-    output << std::setprecision(12) << "{\"simulation_fps\":" << fps << "}\n";
-
+    // Prints timing to stdout only. Artemis Discovery requires a separate
+    // harness that writes numeric metrics to artemis_results.json.
     std::cout << std::fixed << std::setprecision(3)
               << "particles=" << particle_count << " frames=" << frame_count
               << " fps=" << fps << " frame_ms=" << frame_ms
-              << " checksum=" << simulation.checksum() << '\n'
-              << "wrote " << output_path << '\n';
+              << " checksum=" << simulation.checksum() << '\n';
     return 0;
 }
 
@@ -87,7 +81,7 @@ void stream(std::size_t particle_count, std::size_t frame_count) {
 
 void usage(const char* program) {
     std::cerr << "Usage:\n"
-              << "  " << program << " benchmark [particles=2200] [frames=30] [results-path]\n"
+              << "  " << program << " benchmark [particles=2200] [frames=30]\n"
               << "  " << program << " stream [particles=3500] [frames=100000000]\n";
 }
 
@@ -104,8 +98,7 @@ int main(int argc, char** argv) {
         if (mode == "benchmark") {
             const auto particles = argc > 2 ? parse_count(argv[2], "particles") : 2200;
             const auto frames = argc > 3 ? parse_count(argv[3], "frames") : 30;
-            const std::string output = argc > 4 ? argv[4] : "artemis_results.json";
-            return benchmark(particles, frames, output);
+            return benchmark(particles, frames);
         }
         if (mode == "stream") {
             const auto particles = argc > 2 ? parse_count(argv[2], "particles") : 3500;
