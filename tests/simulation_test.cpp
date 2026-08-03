@@ -12,8 +12,8 @@ bool close(double left, double right, double tolerance = 1.0e-12) {
 }  // namespace
 
 int main() {
-    swarm::Simulation first(128, 42);
-    swarm::Simulation second(128, 42);
+    particle_life::Simulation first(128, 42);
+    particle_life::Simulation second(128, 42);
 
     for (int step = 0; step < 20; ++step) {
         first.step();
@@ -35,8 +35,8 @@ int main() {
             std::cerr << "simulation is not deterministic at particle " << i << '\n';
             return 1;
         }
-        if (left.x < 0.0 || left.x >= swarm::Simulation::width || left.y < 0.0 ||
-            left.y >= swarm::Simulation::height || !std::isfinite(left.vx) ||
+        if (left.x < 0.0 || left.x >= particle_life::Simulation::width || left.y < 0.0 ||
+            left.y >= particle_life::Simulation::height || !std::isfinite(left.vx) ||
             !std::isfinite(left.vy)) {
             std::cerr << "particle escaped simulation bounds at index " << i << '\n';
             return 1;

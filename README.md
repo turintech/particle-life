@@ -1,6 +1,6 @@
-# Swarm Garden (Discovery-ready lab)
+# Particle Life (Discovery-ready lab)
 
-Swarm Garden is a deterministic C++17 particle-life simulation with five interacting species in a toroidal world.
+Particle Life is a deterministic C++17 simulation with five interacting species in a toroidal world.
 
 This branch is a **teaching seed**: compile and correctness tests are present, but there is **no Discovery-ready benchmark harness**. Your job is to add one before importing the repository into Artemis.
 
@@ -10,7 +10,7 @@ The seed implementation intentionally checks every particle pair even though for
 
 Artemis Discovery needs a root-level, headless benchmark that writes numeric metrics to `artemis_results.json` (or `.csv`). This branch does not provide that file or a wrapper that creates it.
 
-`./build/swarm_garden benchmark` still times the simulation and prints `fps=` to stdout. That is a useful timed path, not an Artemis results channel.
+`./build/particle_life benchmark` still times the simulation and prints `fps=` to stdout. That is a useful timed path, not an Artemis results channel.
 
 ## Requirements
 
@@ -28,7 +28,7 @@ ctest --test-dir build --output-on-failure
 Optional timed path (stdout only — not Discovery-ready):
 
 ```bash
-./build/swarm_garden benchmark 2200 30
+./build/particle_life benchmark 2200 30
 ```
 
 ## Success criteria for the lab
