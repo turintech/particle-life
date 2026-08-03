@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <vector>
 
-namespace swarm {
+namespace particle_life {
 
 struct Particle {
     double x;
@@ -37,4 +37,4 @@ private:
     double affinity_[species_count][species_count]{};
 };
 
-}  // namespace swarm
+}  // namespace particle_life

@@ -1,6 +1,6 @@
-# Swarm Garden (runner command-iteration lab)
+# Particle Life (runner command-iteration lab)
 
-Swarm Garden is a deterministic C++17 particle-life simulation with five interacting species in a toroidal world.
+Particle Life is a deterministic C++17 simulation with five interacting species in a toroidal world.
 
 This branch is a **teaching seed** for verifying compile, test, and benchmark commands on an Artemis runner when local verification is not the gate. Compile and correctness tests are present. A harness exists, but it is **not** Discovery-ready yet.
 
@@ -9,7 +9,7 @@ This branch is a **teaching seed** for verifying compile, test, and benchmark co
 1. Candidate command recipes below include incomplete or incorrect strings so you practice iterating `--command` values with `changeset validate`.
 2. `tools/benchmark.py` measures `simulation_fps` but writes `artemis_results.json` under `tools/` instead of the repository root. Artemis only accepts the results file in the command working directory (the repo root).
 
-`./build/swarm_garden benchmark` still prints `fps=` to stdout. That is useful diagnostics, not the Artemis results channel.
+`./build/particle_life benchmark` still prints `fps=` to stdout. That is useful diagnostics, not the Artemis results channel.
 
 ## Requirements
 
@@ -26,7 +26,7 @@ Wrong or incomplete:
 ```bash
 make -j$(nproc)
 ctest
-./build/swarm_garden benchmark 2200 30
+./build/particle_life benchmark 2200 30
 ```
 
 Closer (compile and test should work; the harness still writes metrics in the wrong place):

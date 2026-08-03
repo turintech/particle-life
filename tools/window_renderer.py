@@ -48,7 +48,7 @@ class WindowRenderer:
         self.closed = False
 
         self.root = tk.Tk()
-        self.root.title("Swarm Garden")
+        self.root.title("Particle Life")
         self.root.configure(bg="#080b16")
         self.root.protocol("WM_DELETE_WINDOW", self.close)
 
@@ -63,7 +63,7 @@ class WindowRenderer:
 
         self.status = tk.Label(
             self.root,
-            text="Preparing the swarm...",
+            text="Preparing the particles...",
             bg="#080b16",
             fg="#d8f3ff",
             font=("TkFixedFont", 11),
@@ -147,8 +147,8 @@ class WindowRenderer:
 
 def main():
     project = Path(__file__).resolve().parents[1]
-    parser = argparse.ArgumentParser(description="Render Swarm Garden in a Tk window")
-    parser.add_argument("--binary", type=Path, default=project / "build" / "swarm_garden")
+    parser = argparse.ArgumentParser(description="Render Particle Life in a Tk window")
+    parser.add_argument("--binary", type=Path, default=project / "build" / "particle_life")
     parser.add_argument("--particles", type=int, default=3500)
     parser.add_argument("--duration", type=float, default=10.0)
     parser.add_argument("--width", type=int, default=1100)

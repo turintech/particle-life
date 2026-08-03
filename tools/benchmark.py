@@ -25,16 +25,16 @@ def positive_int(value: str) -> int:
 
 def main() -> int:
     project = Path(__file__).resolve().parents[1]
-    parser = argparse.ArgumentParser(description="Benchmark the Swarm Garden simulation")
+    parser = argparse.ArgumentParser(description="Benchmark the Particle Life simulation")
     parser.add_argument("--particles", type=positive_int, default=2200)
     parser.add_argument("--frames", type=positive_int, default=30)
     parser.add_argument("--visualize", dest="visualize", action="store_true", default=False)
     parser.add_argument("--no-visualize", dest="visualize", action="store_false")
     args = parser.parse_args()
 
-    binary = project / "build" / "swarm_garden"
+    binary = project / "build" / "particle_life"
     if not binary.is_file():
-        parser.error("build/swarm_garden does not exist; run the compile command first")
+        parser.error("build/particle_life does not exist; run the compile command first")
 
     # Intentionally wrong location for the lab — must be the repository root.
     results = Path(__file__).resolve().parent / "artemis_results.json"
