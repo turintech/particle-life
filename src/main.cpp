@@ -24,7 +24,7 @@ std::size_t parse_count(const char* value, const char* name) {
 }
 
 int benchmark(std::size_t particle_count, std::size_t frame_count, const std::string& output_path) {
-    swarm::Simulation simulation(particle_count, 20260724);
+    particle_life::Simulation simulation(particle_count, 20260724);
     constexpr std::size_t warmup_frames = 5;
     for (std::size_t frame = 0; frame < warmup_frames; ++frame) {
         simulation.step();
@@ -55,11 +55,11 @@ int benchmark(std::size_t particle_count, std::size_t frame_count, const std::st
 }
 
 void stream(std::size_t particle_count, std::size_t frame_count) {
-    swarm::Simulation simulation(particle_count, 20260724);
+    particle_life::Simulation simulation(particle_count, 20260724);
     const std::array<char, 4> magic = {'S', 'W', 'A', 'R'};
     const auto count = static_cast<std::uint32_t>(particle_count);
-    const float world_width = static_cast<float>(swarm::Simulation::width);
-    const float world_height = static_cast<float>(swarm::Simulation::height);
+    const float world_width = static_cast<float>(particle_life::Simulation::width);
+    const float world_height = static_cast<float>(particle_life::Simulation::height);
     std::cout.write(magic.data(), static_cast<std::streamsize>(magic.size()));
     std::cout.write(reinterpret_cast<const char*>(&count), sizeof(count));
     std::cout.write(reinterpret_cast<const char*>(&world_width), sizeof(world_width));

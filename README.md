@@ -1,6 +1,6 @@
-# Swarm Garden
+# Particle Life
 
-Swarm Garden is a deterministic C++17 particle-life simulation with five interacting species in a toroidal world.
+Particle Life is a deterministic C++17 simulation with five interacting species in a toroidal world.
 
 The seed implementation intentionally checks every particle pair even though forces have a fixed interaction radius. This creates a clear optimization opportunity while the correctness test protects deterministic simulation behavior.
 

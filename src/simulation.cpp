@@ -4,7 +4,7 @@
 #include <cmath>
 #include <random>
 
-namespace swarm {
+namespace particle_life {
 namespace {
 
 constexpr double interaction_radius = 12.0;
@@ -129,4 +129,4 @@ double Simulation::checksum() const {
     return static_cast<double>(result);
 }
 
-}  // namespace swarm
+}  // namespace particle_life
