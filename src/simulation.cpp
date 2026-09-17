@@ -14,6 +14,8 @@ constexpr double force_scale = 0.018;
 constexpr double damping = 0.91;
 constexpr double max_speed = 1.35;
 constexpr double time_step = 0.42;
+constexpr double width = Simulation::width;
+constexpr double height = Simulation::height;
 
 }  // namespace
 
