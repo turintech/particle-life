@@ -34,6 +34,10 @@ private:
     std::vector<Particle> particles_;
     std::vector<double> next_vx_;
     std::vector<double> next_vy_;
+    static constexpr std::size_t cell_columns_ = 13;
+    static constexpr std::size_t cell_rows_ = 7;
+    std::vector<std::vector<std::size_t>> cells_{cell_columns_ * cell_rows_};
+    std::vector<std::size_t> candidates_;
     double affinity_[species_count][species_count]{};
 };
 
