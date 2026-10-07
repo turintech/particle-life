@@ -89,16 +89,21 @@ void Simulation::step() {
             for (int offset_x = -1; offset_x <= 1; ++offset_x) {
                 const auto neighbor_column = (column + cell_columns_ + offset_x) % cell_columns_;
                 const auto& cell = cells_[neighbor_row * cell_columns_ + neighbor_column];
-                candidates_.insert(candidates_.end(), cell.begin(), cell.end());
+                for (const std::size_t j : cell) {
+                    candidate_bits_[j / 64] |= std::uint64_t{1} << (j % 64);
+                }
             }
         }
-        std::sort(candidates_.begin(), candidates_.end());
-        for (const std::size_t j : candidates_) {
-            if (i == j) {
-                continue;
-            }
+        for (std::size_t word = 0; word < candidate_bits_.size(); ++word) {
+            std::uint64_t bits = candidate_bits_[word];
+            while (bits != 0) {
+                const std::size_t j = word * 64 + static_cast<std::size_t>(__builtin_ctzll(bits));
+                bits &= bits - 1;
+                if (i == j) {
+                    continue;
+                }
 
-            const Particle& other = particles_[j];
+                const Particle& other = particles_[j];
             const double dx = wrapped_delta(other.x - particle.x, width);
             const double dy = wrapped_delta(other.y - particle.y, height);
             const double distance_sq = dx * dx + dy * dy;
