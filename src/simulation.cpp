@@ -65,6 +65,16 @@ double Simulation::wrap(double value, double span) {
 }
 
 void Simulation::step() {
+    for (auto& cell : cells_) {
+        cell.clear();
+    }
+    for (std::size_t j = 0; j < particles_.size(); ++j) {
+        const Particle& particle = particles_[j];
+        const auto column = std::min(static_cast<std::size_t>(particle.x * cell_columns_ / width), cell_columns_ - 1);
+        const auto row = std::min(static_cast<std::size_t>(particle.y * cell_rows_ / height), cell_rows_ - 1);
+        cells_[row * cell_columns_ + column].push_back(j);
+    }
+
     for (std::size_t i = 0; i < particles_.size(); ++i) {
         const Particle& particle = particles_[i];
         double force_x = 0.0;
