@@ -124,6 +124,7 @@ void Simulation::step() {
             const double scaled = force_scale * strength / distance;
             force_x += dx * scaled;
             force_y += dy * scaled;
+            }
         }
 
         double vx = (particle.vx + force_x) * damping;
