@@ -81,7 +81,7 @@ void Simulation::step() {
         double force_x = 0.0;
         double force_y = 0.0;
 
-        candidates_.clear();
+        std::fill(candidate_bits_.begin(), candidate_bits_.end(), 0);
         const auto column = std::min(static_cast<std::size_t>(particle.x * cell_columns_ / width), cell_columns_ - 1);
         const auto row = std::min(static_cast<std::size_t>(particle.y * cell_rows_ / height), cell_rows_ - 1);
         for (int offset_y = -1; offset_y <= 1; ++offset_y) {
