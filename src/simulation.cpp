@@ -65,6 +65,7 @@ double Simulation::wrap(double value, double span) {
 }
 
 void Simulation::step() {
+    candidate_bits_.resize((particles_.size() + 63) / 64);
     for (auto& cell : cells_) {
         cell.clear();
     }
