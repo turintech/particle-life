@@ -65,12 +65,34 @@ double Simulation::wrap(double value, double span) {
 }
 
 void Simulation::step() {
+    for (auto& cell : cells_) {
+        cell.clear();
+    }
+    for (std::size_t j = 0; j < particles_.size(); ++j) {
+        const Particle& particle = particles_[j];
+        const auto column = std::min(static_cast<std::size_t>(particle.x * cell_columns_ / width), cell_columns_ - 1);
+        const auto row = std::min(static_cast<std::size_t>(particle.y * cell_rows_ / height), cell_rows_ - 1);
+        cells_[row * cell_columns_ + column].push_back(j);
+    }
+
     for (std::size_t i = 0; i < particles_.size(); ++i) {
         const Particle& particle = particles_[i];
         double force_x = 0.0;
         double force_y = 0.0;
 
-        for (std::size_t j = 0; j < particles_.size(); ++j) {
+        candidates_.clear();
+        const auto column = std::min(static_cast<std::size_t>(particle.x * cell_columns_ / width), cell_columns_ - 1);
+        const auto row = std::min(static_cast<std::size_t>(particle.y * cell_rows_ / height), cell_rows_ - 1);
+        for (int offset_y = -1; offset_y <= 1; ++offset_y) {
+            const auto neighbor_row = (row + cell_rows_ + offset_y) % cell_rows_;
+            for (int offset_x = -1; offset_x <= 1; ++offset_x) {
+                const auto neighbor_column = (column + cell_columns_ + offset_x) % cell_columns_;
+                const auto& cell = cells_[neighbor_row * cell_columns_ + neighbor_column];
+                candidates_.insert(candidates_.end(), cell.begin(), cell.end());
+            }
+        }
+        std::sort(candidates_.begin(), candidates_.end());
+        for (const std::size_t j : candidates_) {
             if (i == j) {
                 continue;
             }
